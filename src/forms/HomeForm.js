@@ -1,26 +1,20 @@
 import React, { Component } from 'react';
+import { NavBar } from '../components/display';
 
 class HomeForm extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {};
-    }
-
-    componentDidMount() {
-        var uid = this.props.match.params.uid;
-        this.setState({uid: uid});
+        this.state = {uid: this.props.match.params.uid};
     }
 
     render() {
         return (
-            <h1>{this.state.uid}</h1>
+            <div>
+                <NavBar>{this.state.uid}</NavBar>
+            </div>
         );
     }
-}
-
-const styles = {
-
 }
 
 export default HomeForm;

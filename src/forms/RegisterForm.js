@@ -10,7 +10,7 @@ import axios from 'axios';
 
 const RegisterURL = ROOT + "/users/";
 const LoginURL = ROOT + "/users/_/login";
-const HomeURL = "/users/_";
+const HomeURL = "/_";
 
 class RegisterForm extends Component {
     constructor(props){
@@ -42,7 +42,7 @@ class RegisterForm extends Component {
         this.setState({isLoading: true, allDisable: true});
         axios.post(RegisterURL, this.state).then(()=>{
             var url = LoginURL.replace("_", this.state.username);
-            axios.post(url, this.state).then(()=>{
+            axios.post(url, this.state, {withCredentials: true}).then(()=>{
                 var userURL = HomeURL.replace("_", this.state.username);
                 this.setState({redirectTo: userURL});
             }).catch(()=>{

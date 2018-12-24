@@ -12,7 +12,7 @@ class App extends Component {
           )} />
           <Route path="/login" component={ LoginForm } />
           <Route path="/register" component={ RegisterForm } />
-          <Route path="/users/:uid" component={ HomeForm } />
+          <Route exact path="/:uid" component={ HomeForm } />
         </Switch>
       </BrowserRouter>
     );

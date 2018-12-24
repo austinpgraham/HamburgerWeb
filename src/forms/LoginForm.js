@@ -33,7 +33,7 @@ class LoginForm extends Component {
     componentDidMount() {
         axios.get(AuthURL, {withCredentials: true}).then((response)=>{
             var username = response.data.username;
-            this.setState({redirectTo: "/users/"+username});
+            this.setState({redirectTo: "/"+username});
         });
     }
 
@@ -61,7 +61,7 @@ class LoginForm extends Component {
         var loginURL = LoginURL.replace("_", this.state.username);
         var reqData = this.state;
         axios.post(loginURL, reqData, {withCredentials: true}).then((response)=>{
-            var homeURL = "/users/_".replace("_", this.state.username);
+            var homeURL = "/_".replace("_", this.state.username);
             this.setState({redirectTo: homeURL});
         }).catch((error)=>{
             if(error.response.status === 404) {
