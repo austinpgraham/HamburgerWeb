@@ -56,7 +56,7 @@ class NavBar extends Component {
         return (
             <div>
                 {this.renderRedirect()}
-                <AppBar>
+                <AppBar position="static">
                     <ToolBar>
                         <Typography variant="h6" color="inherit">
                             Home
