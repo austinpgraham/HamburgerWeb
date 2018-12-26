@@ -35,9 +35,11 @@ class HomeForm extends Component {
         this.renderWishlists = this.renderWishlists.bind(this);
         this.renderRedirect = this.renderRedirect.bind(this);
         this.renderListLoading = this.renderListLoading.bind(this);
+        this.updateList = this.updateList.bind(this);
     }
 
-    componentDidMount() {
+    updateList() {
+        this.setState({isListLoading: true});
         var userURL = UserDataURL.replace("_", this.state.uid);
         axios.get(userURL, {withCredentials: true}).then((response)=>{
             var items = response.data.wishlists.items;
@@ -54,6 +56,10 @@ class HomeForm extends Component {
         });
     }
 
+    componentDidMount() {
+        this.updateList();
+    }
+
     renderWishlists() {
         if (this.state.wishlists !== null) {
             var gridItems = [];
@@ -63,14 +69,14 @@ class HomeForm extends Component {
             });
             return gridItems;
         }
-        return <Typography component="h1">No Wishlists Created.</Typography>;
+        return <Typography variant="h6">No Wishlists Created.</Typography>;
     }
 
     renderListLoading() {
         if (this.state.isListLoading) {
             return <Grid item xs={6}><CircularProgress size={30}/></Grid>
         }
-        return null;
+        return this.renderWishlists();
     }
 
     renderRedirect() {
@@ -94,6 +100,7 @@ class HomeForm extends Component {
         var url = WishlistCreateURL.replace("_", this.state.uid);
         axios.post(url, data, {withCredentials: true}).then((response) =>{
             this.setState({isLoading: false, formDisable: false, wishlistid: null, isPrivate: true, wishlistidError: false});
+            this.updateList();
             this.closeCreateForm();
         }).catch(() => {
             this.setState({wishlistidError: true, isLoading: false, formDisable: false});
@@ -120,7 +127,6 @@ class HomeForm extends Component {
             <div>
                 {this.renderRedirect()}
                 <Grid container spacing={8}>
-                    {this.renderListLoading()}
                     <Grid item xs={12}>
                         <NavBar fullWidth={true}>{this.state.uid}</NavBar>
                     </Grid>
@@ -130,7 +136,7 @@ class HomeForm extends Component {
                             Create Wishlist
                         </Button>
                     </Grid>
-                    {this.renderWishlists()}
+                    {this.renderListLoading()}
                 </Grid>
 
                 <Dialog open={this.state.inCreate} onClose={this.closeCreateForm} aria-labelledby="create-form">
