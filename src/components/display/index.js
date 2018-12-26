@@ -1,3 +1,5 @@
 import Title from './Title';
+import NavBar from './NavBar';
+import Wishlist from './Wishlist';
 
-export { Title };
+export { Title, NavBar, Wishlist };

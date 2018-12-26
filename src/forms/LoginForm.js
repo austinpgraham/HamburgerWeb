@@ -33,18 +33,18 @@ class LoginForm extends Component {
     componentDidMount() {
         axios.get(AuthURL, {withCredentials: true}).then((response)=>{
             var username = response.data.username;
-            this.setState({redirectTo: "/users/"+username});
+            this.setState({redirectTo: "/"+username});
         });
     }
 
     loginWithGoogle() {
-         axios.get(GoogleURL).then((data)=>{
+         axios.get(GoogleURL, {withCredentials: true}).then((data)=>{
             console.log(data);
          });
     }
 
     loginWithFacebook() {
-        axios.get(FacebookURL).then((data)=>{
+        axios.get(FacebookURL, {withCredentials: true}).then((data)=>{
             console.log(data);
         });
     }
@@ -61,7 +61,7 @@ class LoginForm extends Component {
         var loginURL = LoginURL.replace("_", this.state.username);
         var reqData = this.state;
         axios.post(loginURL, reqData, {withCredentials: true}).then((response)=>{
-            var homeURL = "/users/_".replace("_", this.state.username);
+            var homeURL = "/_".replace("_", this.state.username);
             this.setState({redirectTo: homeURL});
         }).catch((error)=>{
             if(error.response.status === 404) {
@@ -127,6 +127,7 @@ class LoginForm extends Component {
                                 variant="extended"
                                 color="primary"
                                 disabled={this.state.allDisable}
+                                onClick={this.loginWithGoogle}
                             >
                             <AddIcon />
                             Sign in with Google
@@ -137,6 +138,7 @@ class LoginForm extends Component {
                                 variant="extended"
                                 color="secondary"
                                 disabled={this.state.allDisable}
+                                onClick={this.loginWithFacebook} 
                             >
                             <AddIcon />
                             Sign in with Facebook
