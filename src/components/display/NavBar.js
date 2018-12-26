@@ -91,7 +91,7 @@ class NavBar extends Component {
 
 const styles={
     right: {
-        marginLeft: '95%'
+        marginLeft: '93%'
     }
 }
 
