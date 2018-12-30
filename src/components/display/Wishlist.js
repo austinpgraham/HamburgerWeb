@@ -7,6 +7,25 @@ import Typography from '@material-ui/core/Typography';
 
 
 class Wishlist extends Component {
+    constructor(props) {
+        super(props);
+
+        this.renderPermedButtons = this.renderPermedButtons.bind(this);
+    }
+
+    renderPermedButtons() {
+        debugger;
+        if(this.props.permissions.includes("edit")) {
+            return [<Button variant="outlined" color="primary">
+                            Edit
+                        </Button>,
+                        <Button variant="contained" color="secondary">
+                            Delete
+                        </Button>];
+        }
+        return null;
+    }
+
     render() {
         var isPrivate = (this.props.isprivate) ? "Private" : "Public";
         var privateColor = (this.props.isprivate) ? "secondary" : "primary";
@@ -27,9 +46,10 @@ class Wishlist extends Component {
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button size="small" color="primary">
+                    <Button size="small" color="primary" variant="contained">
                         View
                     </Button>
+                    {this.renderPermedButtons()}
                 </CardActions>
             </Card>
         );

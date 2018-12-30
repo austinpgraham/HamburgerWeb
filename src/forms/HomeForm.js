@@ -19,6 +19,7 @@ import { Wishlist } from '../components/display';
 
 const WishlistCreateURL = ROOT + "/users/_/wishlists";
 const UserDataURL = ROOT + "/users/_";
+const AuthURL = ROOT + "/auth";
 
 class HomeForm extends Component {
     constructor(props) {
@@ -45,7 +46,12 @@ class HomeForm extends Component {
             var items = response.data.wishlists.items;
             var itemList = [];
             for (var item in items) {
-                var newItem = <Wishlist key={item} isprivate={!items[item].is_public} createdAt={items[item].created_at.split(' ')[0]}>{items[item]}</Wishlist>
+                var newItem = <Wishlist key={item} 
+                                        isprivate={!items[item].is_public} 
+                                        createdAt={items[item].created_at.split(' ')[0]}
+                                        permissions={items[item].permissions}>
+                                    {items[item]}
+                              </Wishlist>
                 itemList.push(newItem);
             }
             this.setState({wishlists: itemList, isListLoading: false});
@@ -57,11 +63,14 @@ class HomeForm extends Component {
     }
 
     componentDidMount() {
+        axios.get(AuthURL, {withCredentials: true}).then((response) => {
+            this.setState({authID: response.data.username});
+        });
         this.updateList();
     }
 
     renderWishlists() {
-        if (this.state.wishlists !== null) {
+        if (this.state.wishlists !== null && this.state.wishlists.length > 0) {
             var gridItems = [];
             this.state.wishlists.forEach(function(p) {
                 var newItem = <Grid key={p} item xs={6}>{p}</Grid>
@@ -128,7 +137,7 @@ class HomeForm extends Component {
                 {this.renderRedirect()}
                 <Grid container spacing={8}>
                     <Grid item xs={12}>
-                        <NavBar fullWidth={true}>{this.state.uid}</NavBar>
+                        <NavBar fullWidth={true} authID={this.state.authID} />
                     </Grid>
                     <Grid item xs={12}>
                         <Button variant="contained" color="primary" onClick={this.openCreateForm}>

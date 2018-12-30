@@ -5,8 +5,12 @@ import ToolBar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import SearchIcon from '@material-ui/icons/Search';
+import InputBase from '@material-ui/core/InputBase';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import { fade } from '@material-ui/core/styles/colorManipulator';
+import { withStyles } from "@material-ui/core/styles";
 import axios from 'axios';
 import { ROOT } from '../../constants';
 
@@ -23,10 +27,6 @@ class NavBar extends Component {
         this.doLogout = this.doLogout.bind(this);
     }
 
-    componentDidMount() {
-        this.setState({uid: this.props.children});
-    }
-
     openMenu(event) {
         this.setState({anchor: event.currentTarget});
     }
@@ -36,7 +36,7 @@ class NavBar extends Component {
     }
 
     doLogout(){
-        var url = LogoutURL.replace("_", this.state.uid);
+        var url = LogoutURL.replace("_", this.props.authID);
         axios.get(url, {withCredentials: true}).then(() => {
             this.setState({redirectTo: "/login"});
         });
@@ -52,16 +52,27 @@ class NavBar extends Component {
     render() {
         const anchor = this.state.anchor;
         const open = Boolean(anchor);
+        const { classes } = this.props;
 
         return (
-            <div>
+            <div style={{width: '100%'}}>
                 {this.renderRedirect()}
                 <AppBar position="static">
                     <ToolBar>
                         <Typography variant="h6" color="inherit">
                             Home
                         </Typography>
-                        <div style={styles.right}>
+                        <div className={classes.search}>
+                            <div className={classes.searchIcon}>
+                                <SearchIcon />
+                            </div>
+                            <InputBase
+                                placeholder="Search Users..."
+                                classes={{root: classes.root, input: classes.input}}
+                            />
+                        </div>
+                        <div className={classes.grow}/>
+                        <div>
                             <IconButton color="inherit" aria-owns={open ? "profile-menu" : undefined} aria-haspopup="true"
                                         onClick={this.openMenu}>
                                 <AccountCircle />
@@ -89,10 +100,49 @@ class NavBar extends Component {
     }
 }
 
-const styles={
-    right: {
-        marginLeft: '93%'
+const styles = theme => ({
+    root:{
+        color: 'inherit',
+        width: '100%'
+    },
+    input: {
+        paddingTop: theme.spacing.unit,
+        paddingRight: theme.spacing.unit,
+        paddingBottom: theme.spacing.unit,
+        paddingLeft: theme.spacing.unit * 10,
+        transition: theme.transitions.create('width'),
+        width: '100%',
+        [theme.breakpoints.up('md')]: {
+          width: 200,
+        },
+    },
+    search: {
+        position: 'relative',
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor: fade(theme.palette.common.white, 0.15),
+        '&:hover': {
+          backgroundColor: fade(theme.palette.common.white, 0.25),
+        },
+        marginRight: theme.spacing.unit * 2,
+        marginLeft: 0,
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+          marginLeft: theme.spacing.unit * 3,
+          width: 'auto',
+        },
+    },
+    searchIcon: {
+        width: theme.spacing.unit * 9,
+        height: '100%',
+        position: 'absolute',
+        pointerEvents: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    grow: {
+        flexGrow: 1
     }
-}
+});
 
-export default NavBar;
+export default withStyles(styles)(NavBar);
