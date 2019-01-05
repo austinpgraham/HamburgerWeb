@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Title } from '../components/display';
-import { withStyles, CircularProgress } from '@material-ui/core';
+import { Title, UserCard } from '../components/display';
+import { withStyles, CircularProgress, Grid } from '@material-ui/core';
 import { ROOT } from '../constants';
 import axios from 'axios';
 
@@ -47,7 +47,24 @@ class SearchForm extends Component {
         if(this.state.results === null || this.state.results.length <= 0) {
             return <Title>No Results</Title>;
         }
-        return <Title>Search Results</Title>
+        var results = this.state.results;
+        var userList = [];
+        for(var user in results) {
+            var newUser = <Grid item xs={12}><UserCard key={user}
+                                    username={results[user].username}
+                                    name={results[user].first_name + " " + results[user].last_name}
+                                    listCount={Object.keys(results[user].wishlists.items).length}
+                          /></Grid>
+            userList.push(newUser);
+        }
+        return (
+            <Grid container spacing={8}>
+                <Grid item xs={12}>
+                    <Title>Search Results</Title>
+                </Grid>
+                {userList}
+            </Grid>
+        );
     }
 
     renderLoading() {

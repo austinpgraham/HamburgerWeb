@@ -88,7 +88,7 @@ class NavBar extends Component {
                 <AppBar position="static">
                     <ToolBar>
                         <Typography variant="h6" color="inherit">
-                            Home
+                            {this.props.title}
                         </Typography>
                         <div className={classes.search}>
                             <div className={classes.searchIcon}>

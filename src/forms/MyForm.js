@@ -19,7 +19,7 @@ class MyForm extends Component {
         
         var uid = this.props.match.params.uid;
         var query = this.props.match.params.query;
-        this.state = {currentForm: (uid === null) ? "search" : "home", 
+        this.state = {currentForm: (uid === null) ? "Search" : "Home", 
                       redirectTo: null,
                       isLoading: true,
                       uid: uid,
@@ -37,7 +37,7 @@ class MyForm extends Component {
     componentDidUpdate() {
         var uid = this.props.match.params.uid;
         var query = this.props.match.params.query;
-        var newForm = (uid == null) ? "search" : "home";
+        var newForm = (uid == null) ? "Search" : "Home";
         if(this.state.currentForm !== newForm ||
            this.state.query !== query ||
            this.state.uid !== uid) {
@@ -62,13 +62,13 @@ class MyForm extends Component {
         }
         var formToLoad = null;
         switch(this.state.currentForm) {
-            case "home":
+            case "Home":
                 formToLoad = <HomeForm 
                                 authID={this.state.authID}
                                 uid={this.state.uid}
                                 />;
                 break;
-            case "search":
+            case "Search":
                 formToLoad = <SearchForm
                                 authID={this.state.authID}
                                 query={this.state.query}
@@ -80,7 +80,10 @@ class MyForm extends Component {
         return (
             <Grid container spacing={8}>
                     <Grid item xs={12}>
-                        <NavBar fullWidth={true} authID={this.state.authID} />
+                        <NavBar fullWidth={true} 
+                                authID={this.state.authID} 
+                                title={this.state.currentForm}
+                        />
                     </Grid>
                     <Grid item xs={12}>
                         {formToLoad}
