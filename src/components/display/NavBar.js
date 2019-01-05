@@ -21,17 +21,32 @@ class NavBar extends Component {
         super(props);
 
         var query = this.props.query;
-        this.state = {anchor: null, redirectTo: null, searchQuery: query};
+        this.state = {anchor: null,
+                      redirectTo: null,
+                      searchQuery: query,
+                      authID: this.props.authID};
         this.openMenu = this.openMenu.bind(this);
         this.closeMenu = this.closeMenu.bind(this);
         this.renderRedirect = this.renderRedirect.bind(this);
         this.doLogout = this.doLogout.bind(this);
         this.doSearch = this.doSearch.bind(this);
         this.updateQuery = this.updateQuery.bind(this);
+        this.goHome = this.goHome.bind(this);
+    }
+
+    componentDidUpdate() {
+        if(this.state.redirectTo !== null) {
+            this.setState({redirectTo: null});
+        }
     }
 
     openMenu(event) {
         this.setState({anchor: event.currentTarget});
+    }
+
+    goHome() {
+        var redirectURL = "/"+this.state.authID;
+        this.setState({redirectTo: redirectURL, anchor: null});
     }
 
     closeMenu(_) {
@@ -50,13 +65,14 @@ class NavBar extends Component {
     }
 
     doSearch() {
-        var redirectURL = "/search?query=" + this.state.searchQuery;
+        var redirectURL = "/search/" + this.state.searchQuery;
         this.setState({redirectTo: redirectURL});
     }
 
     renderRedirect() {
         if(this.state.redirectTo !== null) {
-            return <Redirect to={this.state.redirectTo} />
+            var url = this.state.redirectTo;
+            return <Redirect to={url} />
         }
         return null
     }
@@ -108,7 +124,7 @@ class NavBar extends Component {
                                 }}
                                 open={open}
                                 onClose={this.closeMenu}>
-                                <MenuItem onClick={this.closeMenu}>Profile</MenuItem>
+                                <MenuItem onClick={this.goHome}>My Account</MenuItem>
                                 <MenuItem onClick={this.doLogout}>Logout</MenuItem>
                             </Menu>
                         </div>

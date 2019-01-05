@@ -5,6 +5,7 @@ import { NavBar } from '../components/display';
 import { ROOT } from '../constants';
 import axios from 'axios';
 import HomeForm from './HomeForm';
+import SearchForm from './SearchForm';
 
 const AuthURL = ROOT + "/auth";
 
@@ -15,11 +16,14 @@ const styles = {
 class MyForm extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {currentForm: 'home', 
+        
+        var uid = this.props.match.params.uid;
+        var query = this.props.match.params.query;
+        this.state = {currentForm: (uid === null) ? "search" : "home", 
                       redirectTo: null,
                       isLoading: true,
-                      uid: this.props.match.params.uid};
+                      uid: uid,
+                      query: query};
         this.renderRedirect = this.renderRedirect.bind(this);
         this.renderLoading = this.renderLoading.bind(this);
     }
@@ -28,6 +32,21 @@ class MyForm extends Component {
         axios.get(AuthURL, {withCredentials: true}).then((response) => {
             this.setState({authID: response.data.username, isLoading: false});
         });
+    }
+
+    componentDidUpdate() {
+        var uid = this.props.match.params.uid;
+        var query = this.props.match.params.query;
+        var newForm = (uid == null) ? "search" : "home";
+        if(this.state.currentForm !== newForm ||
+           this.state.query !== query ||
+           this.state.uid !== uid) {
+               this.setState({
+                   currentForm: newForm,
+                   query: query,
+                   uid: uid
+               });
+           }
     }
 
     renderRedirect() {
@@ -42,29 +61,39 @@ class MyForm extends Component {
             return <CircularProgress size={30} />
         }
         var formToLoad = null;
-        debugger;
         switch(this.state.currentForm) {
             case "home":
                 formToLoad = <HomeForm 
                                 authID={this.state.authID}
                                 uid={this.state.uid}
                                 />;
+                break;
+            case "search":
+                formToLoad = <SearchForm
+                                authID={this.state.authID}
+                                query={this.state.query}
+                             />
+                break;
+            default:
+                break;
         }
-        return formToLoad;
+        return (
+            <Grid container spacing={8}>
+                    <Grid item xs={12}>
+                        <NavBar fullWidth={true} authID={this.state.authID} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        {formToLoad}
+                    </Grid>
+            </Grid>
+        );
     }
 
     render() {
         return (
             <div>
                 {this.renderRedirect()}
-                <Grid container spacing={8}>
-                    <Grid item xs={12}>
-                        <NavBar fullWidth={true} authID={this.state.authID} />
-                    </Grid>
-                    <Grid item xs={12}>
-                        {this.renderLoading()}
-                    </Grid>
-                </Grid>
+                {this.renderLoading()}
             </div>
         );
     }
