@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
-import { NavBar } from '../components/display';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import AddIcon from '@material-ui/icons/Add';
@@ -19,24 +17,27 @@ import { Wishlist } from '../components/display';
 
 const WishlistCreateURL = ROOT + "/users/_/wishlists";
 const UserDataURL = ROOT + "/users/_";
-const AuthURL = ROOT + "/auth";
 
 class HomeForm extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {uid: this.props.match.params.uid, inCreate: false, formDisable: false,
+        this.state = {uid: this.props.uid, inCreate: false, formDisable: false,
                       wishlistid: null, isPrivate: true, wishlistidError: false, wishlists: null,
-                      redirectTo: null, isListLoading: true};
+                      isListLoading: true, authID: this.props.authID, isLoading: false};
         this.openCreateForm = this.openCreateForm.bind(this);
         this.closeCreateForm = this.closeCreateForm.bind(this);
         this.doCreate = this.doCreate.bind(this);
         this.renderLoading = this.renderLoading.bind(this);
         this.onFormChange = this.onFormChange.bind(this);
         this.renderWishlists = this.renderWishlists.bind(this);
-        this.renderRedirect = this.renderRedirect.bind(this);
         this.renderListLoading = this.renderListLoading.bind(this);
         this.updateList = this.updateList.bind(this);
+        this.renderCreateButton = this.renderCreateButton.bind(this);
+    }
+
+    componentDidMount() {
+        this.updateList();
     }
 
     updateList() {
@@ -55,18 +56,7 @@ class HomeForm extends Component {
                 itemList.push(newItem);
             }
             this.setState({wishlists: itemList, isListLoading: false});
-        }).catch((error) => {
-            if(error.response.status === 403) {
-                this.setState({redirectTo: "/login"});
-            }
         });
-    }
-
-    componentDidMount() {
-        axios.get(AuthURL, {withCredentials: true}).then((response) => {
-            this.setState({authID: response.data.username});
-        });
-        this.updateList();
     }
 
     renderWishlists() {
@@ -88,11 +78,16 @@ class HomeForm extends Component {
         return this.renderWishlists();
     }
 
-    renderRedirect() {
-        if(this.state.redirectTo !== null) {
-            return <Redirect to={this.state.redirectTo} />
-        }
-        return null
+    renderCreateButton() {
+        if(this.state.authID === this.state.uid) {
+            return (<Grid item xs={12}>
+                 <Button variant="contained" color="primary" onClick={this.openCreateForm}>
+                     <AddIcon />
+                     Create Wishlist
+                 </Button>
+            </Grid> );
+         }
+         return null;
     }
 
     openCreateForm() {
@@ -134,17 +129,8 @@ class HomeForm extends Component {
     render() {
         return (
             <div>
-                {this.renderRedirect()}
                 <Grid container spacing={8}>
-                    <Grid item xs={12}>
-                        <NavBar fullWidth={true} authID={this.state.authID} />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Button variant="contained" color="primary" onClick={this.openCreateForm}>
-                            <AddIcon />
-                            Create Wishlist
-                        </Button>
-                    </Grid>
+                    {this.renderCreateButton()}
                     {this.renderListLoading()}
                 </Grid>
 

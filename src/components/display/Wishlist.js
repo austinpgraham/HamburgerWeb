@@ -14,12 +14,11 @@ class Wishlist extends Component {
     }
 
     renderPermedButtons() {
-        debugger;
         if(this.props.permissions.includes("edit")) {
-            return [<Button variant="outlined" color="primary">
+            return [<Button variant="outlined" color="primary" key="edit">
                             Edit
                         </Button>,
-                        <Button variant="contained" color="secondary">
+                        <Button variant="contained" color="secondary" key="delete">
                             Delete
                         </Button>];
         }

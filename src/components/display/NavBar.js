@@ -20,19 +20,41 @@ class NavBar extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {anchor: null, redirectTo: null};
+        var query = this.props.query;
+        this.state = {anchor: null,
+                      redirectTo: null,
+                      searchQuery: query,
+                      authID: this.props.authID};
         this.openMenu = this.openMenu.bind(this);
         this.closeMenu = this.closeMenu.bind(this);
         this.renderRedirect = this.renderRedirect.bind(this);
         this.doLogout = this.doLogout.bind(this);
+        this.doSearch = this.doSearch.bind(this);
+        this.updateQuery = this.updateQuery.bind(this);
+        this.goHome = this.goHome.bind(this);
+    }
+
+    componentDidUpdate() {
+        if(this.state.redirectTo !== null) {
+            this.setState({redirectTo: null});
+        }
     }
 
     openMenu(event) {
         this.setState({anchor: event.currentTarget});
     }
 
+    goHome() {
+        var redirectURL = "/"+this.state.authID;
+        this.setState({redirectTo: redirectURL, anchor: null});
+    }
+
     closeMenu(_) {
         this.setState({anchor: null});
+    }
+
+    updateQuery(event) {
+        this.setState({searchQuery: event.target.value});
     }
 
     doLogout(){
@@ -42,9 +64,15 @@ class NavBar extends Component {
         });
     }
 
+    doSearch() {
+        var redirectURL = "/search/" + this.state.searchQuery;
+        this.setState({redirectTo: redirectURL});
+    }
+
     renderRedirect() {
         if(this.state.redirectTo !== null) {
-            return <Redirect to={this.state.redirectTo} />
+            var url = this.state.redirectTo;
+            return <Redirect to={url} />
         }
         return null
     }
@@ -60,7 +88,7 @@ class NavBar extends Component {
                 <AppBar position="static">
                     <ToolBar>
                         <Typography variant="h6" color="inherit">
-                            Home
+                            {this.props.title}
                         </Typography>
                         <div className={classes.search}>
                             <div className={classes.searchIcon}>
@@ -69,6 +97,13 @@ class NavBar extends Component {
                             <InputBase
                                 placeholder="Search Users..."
                                 classes={{root: classes.root, input: classes.input}}
+                                onChange={this.updateQuery}
+                                onKeyPress={(e) => {
+                                    if (e.key === 'Enter') {
+                                        this.doSearch();
+                                    }
+                                }}
+                                value={this.state.searchQuery}
                             />
                         </div>
                         <div className={classes.grow}/>
@@ -89,7 +124,7 @@ class NavBar extends Component {
                                 }}
                                 open={open}
                                 onClose={this.closeMenu}>
-                                <MenuItem onClick={this.closeMenu}>Profile</MenuItem>
+                                <MenuItem onClick={this.goHome}>My Account</MenuItem>
                                 <MenuItem onClick={this.doLogout}>Logout</MenuItem>
                             </Menu>
                         </div>
