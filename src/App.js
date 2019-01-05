@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
-import { LoginForm, RegisterForm, HomeForm, SearchForm } from './forms';
+import { LoginForm, RegisterForm, SearchForm } from './forms';
+import MyForm from './forms/MyForm';
 
 class App extends Component {
   render() {
@@ -13,7 +14,7 @@ class App extends Component {
           <Route path="/login" component={ LoginForm } />
           <Route path="/register" component={ RegisterForm } />
           <Route path="/search" component={ SearchForm } />
-          <Route exact path="/:uid" component={ HomeForm } />
+          <Route exact path="/:uid" component={ MyForm } />
         </Switch>
       </BrowserRouter>
     );
