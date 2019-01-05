@@ -20,11 +20,14 @@ class NavBar extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {anchor: null, redirectTo: null};
+        var query = this.props.query;
+        this.state = {anchor: null, redirectTo: null, searchQuery: query};
         this.openMenu = this.openMenu.bind(this);
         this.closeMenu = this.closeMenu.bind(this);
         this.renderRedirect = this.renderRedirect.bind(this);
         this.doLogout = this.doLogout.bind(this);
+        this.doSearch = this.doSearch.bind(this);
+        this.updateQuery = this.updateQuery.bind(this);
     }
 
     openMenu(event) {
@@ -35,11 +38,20 @@ class NavBar extends Component {
         this.setState({anchor: null});
     }
 
+    updateQuery(event) {
+        this.setState({searchQuery: event.target.value});
+    }
+
     doLogout(){
         var url = LogoutURL.replace("_", this.props.authID);
         axios.get(url, {withCredentials: true}).then(() => {
             this.setState({redirectTo: "/login"});
         });
+    }
+
+    doSearch() {
+        var redirectURL = "/search?query=" + this.state.searchQuery;
+        this.setState({redirectTo: redirectURL});
     }
 
     renderRedirect() {
@@ -69,6 +81,13 @@ class NavBar extends Component {
                             <InputBase
                                 placeholder="Search Users..."
                                 classes={{root: classes.root, input: classes.input}}
+                                onChange={this.updateQuery}
+                                onKeyPress={(e) => {
+                                    if (e.key === 'Enter') {
+                                        this.doSearch();
+                                    }
+                                }}
+                                value={this.state.searchQuery}
                             />
                         </div>
                         <div className={classes.grow}/>
