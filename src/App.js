@@ -14,6 +14,7 @@ class App extends Component {
           <Route path="/register" component={ RegisterForm } />
           <Route exact path="/search/:query" component={ MyForm } />
           <Route exact path="/:uid" component={ MyForm } />
+          <Route exact path="/:uid/:listid" component={ MyForm } />
         </Switch>
       </BrowserRouter>
     );

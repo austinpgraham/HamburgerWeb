@@ -6,6 +6,7 @@ import { ROOT } from '../constants';
 import axios from 'axios';
 import HomeForm from './HomeForm';
 import SearchForm from './SearchForm';
+import ListForm from './ListForm';
 
 const AuthURL = ROOT + "/auth";
 
@@ -18,12 +19,12 @@ class MyForm extends Component {
         super(props);
         
         var uid = this.props.match.params.uid;
-        var query = this.props.match.params.query;
-        this.state = {currentForm: (uid === null) ? "Search" : "Home", 
+        this.state = {currentForm: "Home", 
                       redirectTo: null,
                       isLoading: true,
                       uid: uid,
-                      query: query};
+                      query: null,
+                      productID: null};
         this.renderRedirect = this.renderRedirect.bind(this);
         this.renderLoading = this.renderLoading.bind(this);
     }
@@ -35,16 +36,24 @@ class MyForm extends Component {
     }
 
     componentDidUpdate() {
-        var uid = this.props.match.params.uid;
-        var query = this.props.match.params.query;
-        var newForm = (uid == null) ? "Search" : "Home";
+        var {uid, query, listid} = this.props.match.params;
+        var newForm = null;
+        if(listid != null) {
+            newForm = "Wishlist";
+        } else if (query != null) {
+            newForm = "Search";
+        } else if (uid != null) {
+            newForm = "Home";
+        }
         if(this.state.currentForm !== newForm ||
            this.state.query !== query ||
-           this.state.uid !== uid) {
+           this.state.uid !== uid ||
+           this.state.productID !== listid) {
                this.setState({
                    currentForm: newForm,
                    query: query,
-                   uid: uid
+                   uid: uid,
+                   productID: listid
                });
            }
     }
@@ -72,6 +81,13 @@ class MyForm extends Component {
                 formToLoad = <SearchForm
                                 authID={this.state.authID}
                                 query={this.state.query}
+                             />
+                break;
+            case "Wishlist":
+                formToLoad = <ListForm
+                                authID={this.state.authID}
+                                productID={this.state.productID}
+                                uid={this.state.uid}
                              />
                 break;
             default:

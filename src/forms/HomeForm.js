@@ -50,7 +50,9 @@ class HomeForm extends Component {
                 var newItem = <Wishlist key={item} 
                                         isprivate={!items[item].is_public} 
                                         createdAt={items[item].created_at.split(' ')[0]}
-                                        permissions={items[item].permissions}>
+                                        permissions={items[item].permissions}
+                                        uid={this.state.uid}
+                                        listid={item}>
                                     {items[item]}
                               </Wishlist>
                 itemList.push(newItem);
