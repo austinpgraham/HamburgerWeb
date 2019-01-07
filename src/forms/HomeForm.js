@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import { ROOT } from '../constants';
 import { Wishlist } from '../components/display';
+import { ListEditDialog } from '../components/dialogs';
 
 const WishlistCreateURL = ROOT + "/users/_/wishlists";
 const UserDataURL = ROOT + "/users/_";
@@ -24,7 +25,8 @@ class HomeForm extends Component {
 
         this.state = {uid: this.props.uid, inCreate: false, formDisable: false,
                       wishlistid: null, isPrivate: true, wishlistidError: false, wishlists: null,
-                      isListLoading: true, authID: this.props.authID, isLoading: false};
+                      isListLoading: true, authID: this.props.authID, isLoading: false,
+                      inListEdit: false, editingList: null};
         this.openCreateForm = this.openCreateForm.bind(this);
         this.closeCreateForm = this.closeCreateForm.bind(this);
         this.doCreate = this.doCreate.bind(this);
@@ -52,7 +54,8 @@ class HomeForm extends Component {
                                         createdAt={items[item].created_at.split(' ')[0]}
                                         permissions={items[item].permissions}
                                         uid={this.state.uid}
-                                        listid={item}>
+                                        listid={item}
+                                        openEditHandler={this.openEditFormHandler}>
                                     {items[item]}
                               </Wishlist>
                 itemList.push(newItem);
@@ -82,7 +85,7 @@ class HomeForm extends Component {
 
     renderCreateButton() {
         if(this.state.authID === this.state.uid) {
-            return (<Grid item xs={12}>
+            return (<Grid item xs={12} key="create">
                  <Button variant="contained" color="primary" onClick={this.openCreateForm}>
                      <AddIcon />
                      Create Wishlist
@@ -98,6 +101,14 @@ class HomeForm extends Component {
 
     closeCreateForm() {
         this.setState({inCreate: false});
+    }
+
+    openEditFormHandler = listData => {
+        this.setState({inListEdit: true, editingList: listData});
+    }
+
+    closeEditFormHandler = () => {
+        this.setState({inListEdit: false, editingList: null});
     }
 
     doCreate() {
@@ -126,6 +137,21 @@ class HomeForm extends Component {
         } else {
             this.setState({isPrivate: !this.state.isPrivate});
         }
+    }
+
+    renderEditDialog = () => {
+        if(!this.state.editingList) {
+            return null;
+        }
+        return (
+            <ListEditDialog
+                    isVisible={this.state.inListEdit}
+                    listData={this.state.editingList}
+                    authID={this.state.authID}
+                    closeDialogHandler={this.closeEditFormHandler}
+                    editSuccessfulHandler={this.updateList}
+            />
+        );
     }
 
     render() {
@@ -170,6 +196,9 @@ class HomeForm extends Component {
                         </Button>
                     </DialogActions>
                 </Dialog>
+                
+                {this.renderEditDialog()}
+
             </div>
         );
     }
