@@ -21,9 +21,10 @@ class Wishlist extends Component {
             return [<Button variant="outlined" color="primary" key="edit">
                             Edit
                         </Button>,
-                        <Button variant="contained" color="secondary" key="delete">
-                            Delete
-                        </Button>];
+                        // <Button variant="contained" color="secondary" key="delete">
+                        //     Delete
+                        // </Button>];
+                    ];
         }
         return null;
     }

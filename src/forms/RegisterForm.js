@@ -18,7 +18,7 @@ class RegisterForm extends Component {
 
         this.state = {username: "", password: "", cpassword: "", email: "", first_name: "", last_name: "",
                       usernameError: false, allDisable: false, isLoading: false, cpasswordError: false,
-                      redirectTo: null};
+                      redirectTo: null, emailError: false, errorText: null};
         this.onTextChange = this.onTextChange.bind(this);
         this.createUser = this.createUser.bind(this);
         this.showLoading = this.showLoading.bind(this);
@@ -34,7 +34,7 @@ class RegisterForm extends Component {
         } else if(e.target.id === 'cpassword') {
             newObj['cpasswordError'] = this.state.password !== e.target.value;
         }
-        
+        newObj['errorText'] = null;
         this.setState(newObj);
     }
 
@@ -49,7 +49,8 @@ class RegisterForm extends Component {
                 this.setState({redirectTo: "/login"});
             });
         }).catch(()=> {
-            this.setState({usernameError: true, isLoading: false, allDisable: false});
+            this.setState({usernameError: true, isLoading: false, allDisable: false, emailError: true,
+                           errorText: "Either username or email is taken."});
         });
     }
 
@@ -111,6 +112,7 @@ class RegisterForm extends Component {
                                 fullWidth={true}
                                 onChange={this.onTextChange}
                                 disabled={this.state.allDisable}
+                                error={this.state.emailError}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -124,6 +126,7 @@ class RegisterForm extends Component {
                                 onChange={this.onTextChange}
                                 error={this.state.usernameError} 
                                 disabled={this.state.allDisable}
+                                helperText={this.state.errorText}
                             />
                         </Grid>
                         <Grid item xs={12}>

@@ -27,7 +27,7 @@ class Product extends Component {
     render() {
         const { classes } = this.props;
         return (
-            <Card>
+            <Card raised>
                 <CardHeader
                     avatar = {
                         <Avatar aria-label="Provider" src="/static/ebay.jpg"/>
