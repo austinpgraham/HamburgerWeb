@@ -16,9 +16,17 @@ class Wishlist extends Component {
         this.renderRedirect = this.renderRedirect.bind(this);
     }
 
+    openEditForm = () => {
+        var data = {
+            'title': this.props.listid,
+            'is_public': !this.props.isprivate
+        };
+        this.props.openEditHandler(data);
+    }
+
     renderPermedButtons() {
         if(this.props.permissions.includes("edit")) {
-            return [<Button variant="outlined" color="primary" key="edit">
+            return [<Button variant="outlined" color="primary" key="edit" onClick={this.openEditForm}>
                             Edit
                         </Button>,
                         // <Button variant="contained" color="secondary" key="delete">
