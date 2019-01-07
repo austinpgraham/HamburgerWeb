@@ -122,7 +122,7 @@ class LoginForm extends Component {
                                 disabled={this.state.allDisable}
                             />
                         </Grid>
-                        <Grid item xs={6}>
+                        {/* <Grid item xs={6}>
                             <Fab
                                 variant="extended"
                                 color="primary"
@@ -143,7 +143,7 @@ class LoginForm extends Component {
                             <AddIcon />
                             Sign in with Facebook
                             </Fab>
-                        </Grid>
+                        </Grid> */}
                         <Grid item xs={12}>
                             <Grid container spacing={8}>
                                 <Grid item xs={2}>
