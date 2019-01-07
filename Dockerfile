@@ -15,7 +15,9 @@ RUN mkdir /usr/src/app/src
 COPY ./src /usr/src/app/src/
 RUN npm install --silent
 RUN npm install react-scripts@1.1.1 -g --silent
+RUN npm run build
+RUN yarn global add serve
 ENV PORT 80
 EXPOSE 80
 # start app
-CMD ["npm", "start"]
+CMD ["serve", "-d", "build", "-p", "80"]
