@@ -6,7 +6,7 @@ import { withStyles,
 import AddIcon from '@material-ui/icons/Add';
 import { ROOT } from '../constants';
 import { Title, Product } from '../components/display';
-import { AddProductDialog } from '../components/dialogs';
+import { AddProductDialog, PaymentDialog } from '../components/dialogs';
 import axios from 'axios';
 
 const WishlistURL = ROOT + "/users/_u/_p";
@@ -24,7 +24,10 @@ class ListForm extends Component {
                       products: null,
                       isLoading: true,
                       uid: this.props.uid,
-                      addDialogVisible: false};
+                      addDialogVisible: false,
+                      donateDialogVisible: false,
+                      donateList: null,
+                      donateProduct: null};
         this.renderLoading = this.renderLoading.bind(this);
         this.renderProducts = this.renderProducts.bind(this);
     }
@@ -48,6 +51,9 @@ class ListForm extends Component {
                                                                 donations={this.state.products[p].total_donations}
                                                                 image={this.state.products[p].imageURL}
                                                                 link={this.state.products[p].itemURL}
+                                                                openDonateHandler={this.openPaymentForm}
+                                                                listID={this.state.productID}
+                                                                pid={this.state.products[p].hamid}
                                                            >
                                                                 {this.state.products[p].title}
                                                            </Product></Grid>
@@ -79,6 +85,14 @@ class ListForm extends Component {
         this.updateList();
     }
 
+    openPaymentForm = (listID, pid) => {
+        this.setState({donateDialogVisible: true, donateList: listID, donateProduct: pid});
+    }
+
+    closePaymentForm = () => {
+        this.setState({donateDialogVisible: false, donateList: null, donateProduct: null});
+    }
+
     updateList = () => {
         var listURL = WishlistURL.replace("_u", this.state.uid);
         listURL = listURL.replace("_p", this.state.productID);
@@ -100,6 +114,21 @@ class ListForm extends Component {
         this.updateList();
     }
 
+    renderPaymentForm = () => {
+        if(!this.state.donateDialogVisible) {
+            return null;
+        }
+        return (
+            <PaymentDialog
+                onCloseHandler={this.closePaymentForm}
+                listID={this.state.donateList}
+                isVisible={true}
+                authID={this.state.authID}
+                productID={this.state.donateProduct}
+            />
+        );
+    }
+
     render() {
         return(
             <div>
@@ -112,6 +141,7 @@ class ListForm extends Component {
                     onCloseHandler={this.closeAddForm}
                     listid={this.state.productID}
                 />
+                {this.renderPaymentForm()}
             </div>
         );
     }

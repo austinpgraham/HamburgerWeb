@@ -24,6 +24,10 @@ class Product extends Component {
         this.state = {};
     }
 
+    openDonate = () => {
+        this.props.openDonateHandler(this.props.listID, this.props.pid);
+    }
+
     render() {
         const { classes } = this.props;
         return (
@@ -37,7 +41,7 @@ class Product extends Component {
                 />
                 <CardMedia image={this.props.image} className={classes.media}/>
                 <CardActions>
-                    <Button variant="contained" color="primary">
+                    <Button variant="contained" color="primary" onClick={this.openDonate}>
                         Donate
                     </Button>
                 </CardActions>
