@@ -10,12 +10,28 @@ import { Title } from '../components/display';
 import { ROOT } from '../constants';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import { withStyles, MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import green from '@material-ui/core/colors/green';
+import grey from '@material-ui/core/colors/grey';
 
 const GoogleURL = ROOT + "/users/google";
 const FacebookURL = ROOT + "/users/facebook";
 const LoginURL = ROOT + "/users/_/login";
 const AuthURL = ROOT + "/auth";
-
+const buttonStyle = build => ({
+    margin: {
+        margin: 0,
+    },
+    cssRoot: {
+        color: grey[50],
+        backgroundColor: green[500],
+        '&:hover': { 
+            backgroundColor: green[700],
+        },
+    },
+});
 class LoginForm extends Component {
     constructor(props) {
         super(props);
@@ -87,8 +103,9 @@ class LoginForm extends Component {
     }
 
     render() {
+        const { classes } = this.props;
         return(
-            <div style={ styles.container }>
+                         <div style={ styles.container }>
                 <div style={ styles.outline }>
                     {this.renderRedirect()}
                     <Grid container spacing={8}>
@@ -145,36 +162,37 @@ class LoginForm extends Component {
                             </Fab>
                         </Grid> */}
                         <Grid item xs={12}>
-                            <Grid container spacing={8}>
-                                <Grid item xs={2}>
+                            <Grid container spacing={16}>
+                                <Grid item xl={2}>
                                     <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={this.loginManual}
-                                        disabled={this.state.allDisable}
-                                    >
-                                        Login
-                                    </Button>
-                                </Grid>
-                                <Grid item xs={2}>
-                                    <Button
-                                        variant="outlined"
-                                        color="primary"
-                                        component={Link}
-                                        to="/register"
-                                        disabled={this.state.allDisable}
-                                    >
-                                        Register
-                                    </Button>
-                                </Grid>
-                                <Grid item xs={9} >
-                                    {this.renderLoading()}
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </div>
-            </div>
+                        variant="contained"
+                        color="primary"
+                        onClick={this.loginManual}
+                        disabled={this.state.allDisable}
+                        className={classNames(classes.margin, classes.cssRoot)}
+                    >
+                        Login
+                    </Button>
+                </Grid>
+                <Grid item xs={2}>
+                    <Button
+                        variant="outlined"
+                        color="primary"
+                        component={Link}
+                        to="/register"
+                        disabled={this.state.allDisable}
+                    >
+                        Register
+                    </Button>
+                </Grid>
+                <Grid item xs={9} >
+                    {this.renderLoading()}
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+    </div>
+    </div>
         );
     }
 }
@@ -204,4 +222,4 @@ const styles = {
     }
 }
 
-export default LoginForm;
+export default withStyles(buttonStyle)(LoginForm);
