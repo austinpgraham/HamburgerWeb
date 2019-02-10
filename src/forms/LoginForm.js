@@ -34,6 +34,16 @@ const buttonStyle = build => ({
         },
     },
 });
+
+const textStyles = createMuiTheme({
+    overrides: {
+    },
+    typography: {
+        fontFamily: [
+          'Roboto',
+        ].join(','),
+    },
+});
 class LoginForm extends Component {
     constructor(props) {
         super(props);
@@ -113,23 +123,26 @@ class LoginForm extends Component {
                 {this.renderRedirect()}
                     <Grid container spacing={8}>
                         <Grid item xs={12}>
-                            <Title>SimonSays</Title>
+                        <Title>SimonSays</Title>
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField
-                    required
-                    id="username"
-                    label="Username"
-                    placeholder="Username"
-                    variant="filled"
-                    fullWidth={true}
-                    error={this.state.usernameError}
-                    onChange={this.onTextChange}
-                    disabled={this.state.allDisable}
-                />
+                          <MuiThemeProvider theme={textStyles}>
+                         <TextField
+                          required
+                          id="username"
+                         label="Username"
+                         placeholder="Username"
+                          variant="filled"
+                         fullWidth={true}
+                         error={this.state.usernameError}
+                          onChange={this.onTextChange}
+                           disabled={this.state.allDisable}
+                  />
+                </MuiThemeProvider>
             </Grid>
             <Grid item xs={12}>
-                <TextField
+                 <MuiThemeProvider theme={textStyles}>
+                   <TextField
                     required
                     id="password"
                     label="Password"
@@ -140,7 +153,8 @@ class LoginForm extends Component {
                     error={this.state.passwordError}
                     onChange={this.onTextChange}
                     disabled={this.state.allDisable}
-                />
+                  />
+                </MuiThemeProvider>
             </Grid>
                     {/* <Grid item xs={6}>
                             <Fab
