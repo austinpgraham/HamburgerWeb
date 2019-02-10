@@ -3,13 +3,11 @@ import { Redirect } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { Title } from '../components/display';
 import { ROOT } from '../constants';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Typography from '@material-ui/core/Typography';
 
 const GoogleURL = ROOT + "/users/google";
 const FacebookURL = ROOT + "/users/facebook";
@@ -93,7 +91,13 @@ class LoginForm extends Component {
                     {this.renderRedirect()}
                     <Grid container spacing={8}>
                         <Grid item xs={12}>
-                            <Title>SimonSays</Title>
+                            <Grid container spacing={0} justify="center">
+                                <Grid item xs="auto" sm="auto">
+                                    <Typography gutterBottom variant="h5" color="primary">
+                                        SimonSays
+                                    </Typography>
+                                </Grid>
+                            </Grid>
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
@@ -145,8 +149,8 @@ class LoginForm extends Component {
                             </Fab>
                         </Grid> */}
                         <Grid item xs={12}>
-                            <Grid container spacing={8}>
-                                <Grid item xs={2}>
+                            <Grid container spacing={8} justify="center">
+                                <Grid item xs="auto" sm="auto">
                                     <Button
                                         variant="contained"
                                         color="primary"
@@ -156,7 +160,7 @@ class LoginForm extends Component {
                                         Login
                                     </Button>
                                 </Grid>
-                                <Grid item xs={2}>
+                                <Grid item xs="auto" sm="auto">
                                     <Button
                                         variant="outlined"
                                         color="primary"
@@ -193,7 +197,7 @@ const styles = {
     outline: {
         display: 'flex',
         flexDirection: 'column',
-        borderColor: '#2196f3',
+        borderColor: '#1565c0',
         borderRadius: 6,
         borderStyle: 'solid',
         paddingLeft: '20px',

@@ -7,6 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { Title } from '../components/display';
 import { ROOT } from '../constants';
 import axios from 'axios';
+import { Typography } from '@material-ui/core';
 
 const RegisterURL = ROOT + "/users/";
 const LoginURL = ROOT + "/users/_/login";
@@ -76,7 +77,13 @@ class RegisterForm extends Component {
                     {this.renderRedirect()}
                     <Grid container spacing={8}>
                         <Grid item xs={12}>
-                            <Title>Register</Title>
+                            <Grid container spacing={0} justify="center">
+                                <Grid item xs="auto" sm="auto">
+                                    <Typography gutterBottom variant="h3" color="primary">
+                                        Register
+                                    </Typography>
+                                </Grid>
+                            </Grid>
                         </Grid>
                         <Grid item xs={6}>
                             <TextField
@@ -156,16 +163,18 @@ class RegisterForm extends Component {
                                 error={this.state.cpasswordError}
                             />
                         </Grid>
-                        <Grid item xs={3}>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={this.createUser}
-                                fullWidth={false}
-                                disabled={this.state.allDisable}
-                            >
+                        <Grid container justify="center">
+                            <Grid item xs="auto">
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={this.createUser}
+                                    fullWidth={false}
+                                    disabled={this.state.allDisable}
+                                >
                                 Create
-                            </Button>
+                                </Button>
+                            </Grid>
                         </Grid>
                         <Grid item xs={3}>
                             {this.showLoading()}
@@ -191,7 +200,7 @@ const styles = {
     outline: {
         display: 'flex',
         flexDirection: 'column',
-        borderColor: '#2196f3',
+        borderColor: '#1565c0',
         borderRadius: 6,
         borderStyle: 'solid',
         paddingLeft: '20px',

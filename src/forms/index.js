@@ -4,5 +4,6 @@ import RegisterForm from './RegisterForm';
 import SearchForm from './SearchForm';
 import MyForm from './MyForm';
 import ListForm from './ListForm';
+import DashboardForm from './DashboardForm';
 
-export { LoginForm, HomeForm, RegisterForm, SearchForm, MyForm, ListForm };
+export { LoginForm, HomeForm, RegisterForm, SearchForm, MyForm, ListForm, DashboardForm };
