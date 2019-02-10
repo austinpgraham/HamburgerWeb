@@ -15,7 +15,7 @@ const styles = {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        fontFamily: 'Roboto,sans-serif'
+        fontFamily: 'Roboto'
     }
 }
 
