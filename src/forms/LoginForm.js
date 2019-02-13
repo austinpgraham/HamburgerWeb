@@ -9,6 +9,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { Title } from '../components/display';
 import { ROOT } from '../constants';
 import { Link } from 'react-router-dom';
+import {HamPrimaryButton} from '../components/display';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -20,18 +21,7 @@ const GoogleURL = ROOT + "/users/google";
 const FacebookURL = ROOT + "/users/facebook";
 const LoginURL = ROOT + "/users/_/login";
 const AuthURL = ROOT + "/auth";
-const buttonStyle = build => ({
-    margin: {
-        margin: 0,
-    },
-    cssRoot: {
-        color: grey[50],
-        backgroundColor: green[500],
-        '&:hover': { 
-            backgroundColor: green[700],
-        },
-    },
-});
+
 class LoginForm extends Component {
     constructor(props) {
         super(props);
@@ -45,6 +35,7 @@ class LoginForm extends Component {
         this.onTextChange = this.onTextChange.bind(this);
         this.renderLoading = this.renderLoading.bind(this);
     }
+
 
     componentDidMount() {
         axios.get(AuthURL, {withCredentials: true}).then((response)=>{
@@ -103,7 +94,6 @@ class LoginForm extends Component {
     }
 
     render() {
-        const { classes } = this.props;
         return(
                          <div style={ styles.container }>
                 <div style={ styles.outline }>
@@ -164,15 +154,12 @@ class LoginForm extends Component {
                         <Grid item xs={12}>
                             <Grid container spacing={16}>
                                 <Grid item xl={2}>
-                                    <Button
-                        variant="contained"
-                        color="primary"
+                                    <HamPrimaryButton
                         onClick={this.loginManual}
                         disabled={this.state.allDisable}
-                        className={classNames(classes.margin, classes.cssRoot)}
                     >
                         Login
-                    </Button>
+                    </HamPrimaryButton>
                 </Grid>
                 <Grid item xs={2}>
                     <Button
@@ -222,4 +209,4 @@ const styles = {
     }
 }
 
-export default withStyles(buttonStyle)(LoginForm);
+export default withStyles(LoginForm)(HamPrimaryButton);
