@@ -22,6 +22,28 @@ const FacebookURL = ROOT + "/users/facebook";
 const LoginURL = ROOT + "/users/_/login";
 const AuthURL = ROOT + "/auth";
 
+const buttonStyle = build => ({
+    margin: {
+        margin: 0,
+    },
+    cssRoot: {
+        color: grey[50],
+        backgroundColor: green[500],
+        '&:hover': { 
+            backgroundColor: green[700],
+        },
+    },
+});
+
+const textStyles = createMuiTheme({
+    overrides: {
+    },
+    typography: {
+        fontFamily: [
+          'Roboto',
+        ].join(','),
+    },
+});
 class LoginForm extends Component {
     constructor(props) {
         super(props);
@@ -100,36 +122,40 @@ class LoginForm extends Component {
                     {this.renderRedirect()}
                     <Grid container spacing={8}>
                         <Grid item xs={12}>
-                            <Title>SimonSays</Title>
+                        <Title>SimonSays</Title>
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField
-                                required
-                                id="username"
-                                label="Username"
-                                placeholder="Username"
-                                variant="filled"
-                                fullWidth={true}
-                                error={this.state.usernameError}
-                                onChange={this.onTextChange}
-                                disabled={this.state.allDisable}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                required
-                                id="password"
-                                label="Password"
-                                placeholder="Password"
-                                variant="filled"
-                                type="password"
-                                fullWidth={true}
-                                error={this.state.passwordError}
-                                onChange={this.onTextChange}
-                                disabled={this.state.allDisable}
-                            />
-                        </Grid>
-                        {/* <Grid item xs={6}>
+                          <MuiThemeProvider theme={textStyles}>
+                         <TextField
+                          required
+                          id="username"
+                         label="Username"
+                         placeholder="Username"
+                          variant="filled"
+                         fullWidth={true}
+                         error={this.state.usernameError}
+                          onChange={this.onTextChange}
+                           disabled={this.state.allDisable}
+                  />
+                </MuiThemeProvider>
+            </Grid>
+            <Grid item xs={12}>
+                 <MuiThemeProvider theme={textStyles}>
+                   <TextField
+                    required
+                    id="password"
+                    label="Password"
+                    placeholder="Password"
+                    variant="filled"
+                    type="password"
+                    fullWidth={true}
+                    error={this.state.passwordError}
+                    onChange={this.onTextChange}
+                    disabled={this.state.allDisable}
+                  />
+                </MuiThemeProvider>
+            </Grid>
+                    {/* <Grid item xs={6}>
                             <Fab
                                 variant="extended"
                                 color="primary"
